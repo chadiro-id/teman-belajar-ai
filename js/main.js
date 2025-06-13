@@ -64,7 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     try {
       // Lakukan panggilan API ke Azure Function
-	  console.log("try get response");
       const response = await fetch(AZURE_FUNCTION_URL, {
         method: 'POST',
         headers: {
@@ -73,9 +72,12 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify(requestBody),
       });
       
+      console.log("response ok: " + response.ok);
+      console.log("response status: " + response.status);
+
       if (!response.ok) {
         const errorData = await response.json();
-        console.log(errorData);
+        console.log(errorData.error);
         throw new Error(`HTTP error! Status: ${response.status}, Message: ${errorData.error || response.statusText}`);
       }
       
