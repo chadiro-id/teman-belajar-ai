@@ -7,6 +7,28 @@
   <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
+  <div class="chat-container">
+    <h1>Teman Belajar AI</h1>
+    
+    <div class="subject-selection">
+      <label for="subject">Pilih Mata Pelajaran:</label>
+      <select id="subject">
+        <option value="pengetahuan umum">Pengetahuan Umum</option>
+        <option value="matematika">Matematika</option>
+        <option value="bahasa indonesia">Bahasa Indonesia</option>
+      </select>
+    </div>
+    
+    <div class="chat-history" id="chatHistory"></div>
+    
+    <div class="chat-input">
+      <input type="text" id="userMessage" placeholder="Ketik pesan Anda...">
+      <button type="button" id="sendMessage">Kirim</button>
+    </div>
+    <p class="info-text">Pastikan Azure Function Anda berjalan (`func start`) dan CORS sudah diatur dengan benar.</p>
+  </div>
+
+  <!-- Scripts -->
   <script src="./js/main.js"></script>
 </body>
 </html>
