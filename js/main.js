@@ -7,7 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // URL Azure Function Anda. PENTING: Ganti dengan URL fungsi lokal atau yang sudah di-deploy.
   // Jika Anda menjalankan secara lokal, ini biasanya: http://localhost:7071/api/ai_assistant
   // Pastikan nama routernya 'ai_assistant' sesuai dengan `@app.route(route="ai_assistant")`
-  const AZURE_FUNCTION_URL = 'http://localhost:7071/api/ai_assistant'; 
+  const AZURE_FUNCTION_URL = 'https://temanbelajarcr-backend-app.delightfulpebble-0c5b36fd.southeastasia.azurecontainerapps.io/api/ai_assistant'; 
+  // const AZURE_FUNCTION_URL = 'http://localhost:5000/api/ai_assistant';
 
   let currentChatHistory = []; // Untuk menyimpan riwayat chat di sesi frontend
 
@@ -63,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     try {
       // Lakukan panggilan API ke Azure Function
+	  console.log("try get response");
       const response = await fetch(AZURE_FUNCTION_URL, {
         method: 'POST',
         headers: {
@@ -73,6 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       if (!response.ok) {
         const errorData = await response.json();
+        console.log(errorData);
         throw new Error(`HTTP error! Status: ${response.status}, Message: ${errorData.error || response.statusText}`);
       }
       
