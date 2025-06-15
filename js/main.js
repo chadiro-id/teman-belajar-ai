@@ -4,7 +4,7 @@ import {
   getAuth,
   signInAnonymously,
   onAuthStateChanged,
-  googleAuthProvider,
+  GoogleAuthProvider,
   signInWithPopup,
   signOut
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
