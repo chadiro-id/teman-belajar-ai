@@ -294,7 +294,7 @@ sendBtn.addEventListener("click", async () => {
   messageInput.value = "";
 
   try {
-    const res = await fetch("https://YOUR_BACKEND_URL/api/chat_with_ai", {
+    const res = await fetch("https://temanbelajarcr-backend-app.delightfulpebble-0c5b36fd.southeastasia.azurecontainerapps.io/api/chat_with_ai", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
