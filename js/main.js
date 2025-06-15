@@ -3,7 +3,10 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import {
   getAuth,
   signInAnonymously,
-  onAuthStateChanged
+  onAuthStateChanged,
+  googleAuthProvider,
+  signInWithPopup,
+  signOut
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import {
   getFirestore,
@@ -49,6 +52,21 @@ const messageInput = document.getElementById("message");
 const newChatBtn = document.getElementById("new-chat-btn");
 const currentUserLabel = document.getElementById("current-user");
 const conversationList = document.getElementById("conversation-list");
+
+const provider = new GoogleAuthProvider();
+const currentUserEl = document.getElementById("current-user");
+
+// Event click di avatar
+currentUserEl.addEventListener("click", () => {
+  if (auth.currentUser && auth.currentUser.isAnonymous) {
+    const confirmGoogle = confirm("Ingin login dengan Google?");
+    if (confirmGoogle) signInWithPopup(auth, provider).catch(console.error);
+  } else {
+    const confirmLogout = confirm("Keluar dari akun Google?");
+    if (confirmLogout) signOut(auth);
+  }
+});
+
 
 // == Local State ==
 let fullHistory = {}; // { subject: [ { role, message } ] }
@@ -279,10 +297,24 @@ newChatBtn.addEventListener("click", () => {
 signInAnonymously(auth).catch(console.error);
 
 onAuthStateChanged(auth, (user) => {
-  userId = user ? user.uid : getOrCreateGuestId();
-  currentUserLabel.textContent = user ? `User: ${user.uid.slice(0, 6)}...` : `Guest: ${userId.slice(0, 6)}...`;
-  loadConversations();
+  if (user) {
+    userId = user.uid;
+    loadConversations();
+
+    if (user.isAnonymous) {
+      const guestId = getOrCreateGuestId();
+      currentUserEl.innerHTML = `<img src="https://api.dicebear.com/7.x/icons/svg?seed=${guestId}" alt="Guest" class="avatar" title="Klik untuk login" />`;
+    } else {
+      const photo = user.photoURL || "https://via.placeholder.com/40";
+      currentUserEl.innerHTML = `<img src="${photo}" alt="User" class="avatar" title="Klik untuk logout" />`;
+    }
+  } else {
+    // fallback, shouldn't happen
+    userId = getOrCreateGuestId();
+    currentUserEl.innerHTML = `<img src="https://api.dicebear.com/7.x/icons/svg?seed=${userId}" class="avatar" />`;
+  }
 });
+
 
 // == Start ==
 loadSubjects()
