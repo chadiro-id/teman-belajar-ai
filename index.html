@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,28 +8,30 @@
   <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-  <div class="chat-container">
+  <header>
     <h1>Teman Belajar AI</h1>
-    
-    <div class="subject-selection">
-      <label for="subject">Pilih Mata Pelajaran:</label>
+  </header>
+
+  <main>
+    <section class="subject-select">
+      <label for="subject">Pilih Subjek:</label>
       <select id="subject">
-        <option value="pengetahuan umum">Pengetahuan Umum</option>
         <option value="matematika">Matematika</option>
         <option value="bahasa indonesia">Bahasa Indonesia</option>
+        <option value="pengetahuan umum">Pengetahuan Umum</option>
       </select>
-    </div>
-    
-    <div class="chat-history" id="chatHistory"></div>
-    
-    <div class="chat-input">
-      <input type="text" id="userMessage" placeholder="Ketik pesan Anda...">
-      <button type="button" id="sendMessage">Kirim</button>
-    </div>
-    <!--<p class="info-text">Pastikan Azure Function Anda berjalan (`func start`) dan CORS sudah diatur dengan benar.</p>-->
-  </div>
+    </section>
 
-  <!-- Scripts -->
-  <script src="./js/main.js"></script>
+    <section class="chat-container" id="chat-container">
+      <!-- Chat messages will go here -->
+    </section>
+
+    <section class="chat-input">
+      <input type="text" id="message" placeholder="Tulis pertanyaan kamu..." />
+      <button id="send-btn">Kirim</button>
+    </section>
+  </main>
+
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>
