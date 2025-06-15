@@ -20,9 +20,9 @@ import {
 
 // == Firebase Config ==
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID"
+  apiKey: "AIzaSyAp50SILueBPUAZjkhDZi_WwWyoodW2Q-k",
+  authDomain: "temanbelajarai-1eaa5.firebaseapp.com",
+  projectId: "temanbelajarai-1eaa5"
 };
 
 // == Initialize Firebase ==
