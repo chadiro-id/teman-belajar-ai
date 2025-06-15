@@ -124,3 +124,23 @@ main {
   padding: 0.5rem;
   border-radius: 6px;
 }
+.chat-bubble {
+  max-width: 70%;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  line-height: 1.4;
+}
+
+.user {
+  background-color: #e0f7fa;
+  align-self: flex-end;
+  margin-left: auto;
+}
+
+.assistant {
+  background-color: #ede7f6;
+  align-self: flex-start;
+  margin-right: auto;
+}
+
