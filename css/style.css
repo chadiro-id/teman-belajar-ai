@@ -55,3 +55,72 @@ main {
   border-radius: 6px;
   cursor: pointer;
 }
+
+.app-container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 280px;
+  background-color: #f4f4f4;
+  border-right: 1px solid #ddd;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sidebar header {
+  margin-bottom: 1rem;
+}
+
+.sidebar h2 {
+  margin: 0;
+}
+
+.nav-actions button {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.nav-actions ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-actions li {
+  padding: 0.5rem;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.nav-actions li:hover {
+  background-color: #e0e7ff;
+}
+
+.chat-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-header {
+  background-color: #eef;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#subject {
+  padding: 0.5rem;
+  border-radius: 6px;
+}
