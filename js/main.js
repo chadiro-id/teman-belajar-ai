@@ -60,7 +60,41 @@ const currentUserEl = document.getElementById("current-user");
 currentUserEl.addEventListener("click", () => {
   if (auth.currentUser && auth.currentUser.isAnonymous) {
     const confirmGoogle = confirm("Ingin login dengan Google?");
-    if (confirmGoogle) signInWithPopup(auth, provider).catch(console.error);
+    // if (confirmGoogle) signInWithPopup(auth, provider).catch(console.error);
+    if (confirmGoogle) {
+      signInWithPopup(auth, provider).then(async (result) => {
+        const googleUser = result.user;
+        const guestData = JSON.parse(localStorage.getItem("chat_history") || "{}");
+        const confirmMerge = confirm("Kami menemukan percakapan saat kamu sebagai tamu. Mau digabung ke akun Google kamu?");
+        
+        if (confirmMerge) {
+          // Simpan semua chat ke Firestore
+          for (const subject in guestData) {
+            await addDoc(collection(db, "conversations"), {
+              user_id: googleUser.uid,
+              subject,
+              chat_history: guestData[subject],
+              created_at: serverTimestamp(),
+              updated_at: serverTimestamp()
+            });
+          }
+          alert("✅ Riwayat guest berhasil disinkronkan!");
+        } else {
+          alert("📦 Riwayat tamu tidak disimpan. Mulai bersih!");
+        }
+        
+        // Hapus localStorage guest
+        localStorage.removeItem("chat_history");
+        localStorage.removeItem("guest_id");
+        
+        // Refresh app state
+        userId = googleUser.uid;
+        loadConversations();
+      })
+      .catch((error) => {
+        console.error("Google login failed:", error);
+      });
+    }
   } else {
     const confirmLogout = confirm("Keluar dari akun Google?");
     if (confirmLogout) signOut(auth);
