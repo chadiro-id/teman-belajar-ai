@@ -8,29 +8,42 @@
   <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-  <header>
-    <h1>Teman Belajar AI</h1>
-  </header>
+  <div class="app-container">
+    
+    <nav class="sidebar">
+      <header>
+        <h2>Teman Belajar</h2>
+        <p id="current-user">Guest</p>
+      </header>
+      <section class="nav-actions">
+        <button id="new-chat-btn">+ Buat Percakapan Baru</button>
+        <h4>Riwayat</h4>
+        <ul id="conversation-list"></ul>
+      </section>
+    </nav>
 
-  <main>
-    <section class="subject-select">
-      <label for="subject">Pilih Subjek:</label>
-      <select id="subject">
-        <option value="matematika">Matematika</option>
-        <option value="bahasa indonesia">Bahasa Indonesia</option>
-        <option value="pengetahuan umum">Pengetahuan Umum</option>
-      </select>
-    </section>
+    <main class="chat-area">
+      <header class="chat-header">
+        <h3 id="subject-title">Subjek: <span id="current-subject">Matematika</span></h3>
+        <label for="subject">Pilih Mata Pelajaran:</label>
+        <select id="subject" name="subject">
+          <option value="matematika">Matematika</option>
+          <option value="bahasa indonesia">Bahasa Indonesia</option>
+          <option value="pengetahuan umum">Pengetahuan Umum</option>
+        </select>
+      </header>
 
-    <section class="chat-container" id="chat-container">
-      <!-- Chat messages will go here -->
-    </section>
+      <section class="chat-container" id="chat-container">
+        <!-- Chat muncul di sini -->
+      </section>
 
-    <section class="chat-input">
-      <input type="text" id="message" placeholder="Tulis pertanyaan kamu..." />
-      <button id="send-btn">Kirim</button>
-    </section>
-  </main>
+      <section class="chat-input">
+        <input type="text" id="message" placeholder="Tulis pertanyaan kamu..." />
+        <button id="send-btn">Kirim</button>
+      </section>
+    </main>
+
+  </div>
 
   <script type="module" src="js/main.js"></script>
 </body>
