@@ -65,10 +65,24 @@ currentUserEl.addEventListener("click", () => {
       signInWithPopup(auth, provider).then(async (result) => {
         const googleUser = result.user;
         const guestData = JSON.parse(localStorage.getItem("chat_history") || "{}");
-        const confirmMerge = confirm("Kami menemukan percakapan saat kamu sebagai tamu. Mau digabung ke akun Google kamu?");
+        // const confirmMerge = confirm("Kami menemukan percakapan saat kamu sebagai tamu. Mau digabung ke akun Google kamu?");
         
-        if (confirmMerge) {
-          // Simpan semua chat ke Firestore
+        // if (confirmMerge) {
+        //   for (const subject in guestData) {
+        //     await addDoc(collection(db, "conversations"), {
+        //       user_id: googleUser.uid,
+        //       subject,
+        //       chat_history: guestData[subject],
+        //       created_at: serverTimestamp(),
+        //       updated_at: serverTimestamp()
+        //     });
+        //   }
+        //   alert("✅ Riwayat guest berhasil disinkronkan!");
+        // } else {
+        //   alert("📦 Riwayat tamu tidak disimpan. Mulai bersih!");
+        // }
+
+        showMergeModal(async () => {
           for (const subject in guestData) {
             await addDoc(collection(db, "conversations"), {
               user_id: googleUser.uid,
@@ -78,10 +92,17 @@ currentUserEl.addEventListener("click", () => {
               updated_at: serverTimestamp()
             });
           }
-          alert("✅ Riwayat guest berhasil disinkronkan!");
-        } else {
-          alert("📦 Riwayat tamu tidak disimpan. Mulai bersih!");
-        }
+          alert("✅ Riwayat berhasil digabungkan.");
+          localStorage.clear();
+          userId = googleUser.uid;
+          loadConversations();
+        }, () => {
+          alert("📦 Riwayat tamu tidak disimpan.");
+          localStorage.clear();
+          userId = googleUser.uid;
+          loadConversations();
+        });
+
         
         // Hapus localStorage guest
         localStorage.removeItem("chat_history");
@@ -349,6 +370,42 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
+function showMergeModal(onConfirm, onCancel) {
+  const modal = document.getElementById("modal-overlay");
+  const confirmBtn = document.getElementById("modal-confirm");
+  const cancelBtn = document.getElementById("modal-cancel");
+
+  modal.classList.remove("hidden");
+  confirmBtn.focus();
+
+  const keyHandler = (e) => {
+    if (e.key === "Escape") {
+      onCancel();
+      closeModal();
+    }
+  };
+
+  function closeModal() {
+    modal.classList.add("hidden");
+    confirmBtn.removeEventListener("click", confirmHandler);
+    cancelBtn.removeEventListener("click", cancelHandler);
+    document.removeEventListener("keydown", keyHandler);
+  }
+
+  function confirmHandler() {
+    onConfirm();
+    closeModal();
+  }
+
+  function cancelHandler() {
+    onCancel();
+    closeModal();
+  }
+
+  confirmBtn.addEventListener("click", confirmHandler);
+  cancelBtn.addEventListener("click", cancelHandler);
+  document.addEventListener("keydown", keyHandler);
+}
 
 // == Start ==
 loadSubjects()
