@@ -557,3 +557,5 @@ function getSystemPromptBySubject(subjectName) {
     const found = availableSubjects.find(s => s.name.toLowerCase() === subjectName.toLowerCase());
     return found ? found.prompt : "You are a helpful AI assistant."; // Default prompt
 }
+
+loadSubjects();
