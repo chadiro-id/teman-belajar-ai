@@ -13,7 +13,10 @@
     <nav class="sidebar">
       <header>
         <h2>Teman Belajar</h2>
-        <p id="current-user">Guest</p>
+        <div id="current-user-avatar" class="avatar-container">
+          <img src="https://api.dicebear.com/7.x/icons/svg?seed=initial" alt="User" class="avatar" title="Klik untuk login/logout" />
+          <span id="current-user-label">Loading...</span>
+        </div>
       </header>
       <section class="nav-actions">
         <button id="new-chat-btn">+ Buat Percakapan Baru</button>
@@ -24,38 +27,74 @@
 
     <main class="chat-area">
       <header class="chat-header">
-        <h3 id="subject-title">Subjek: <span id="current-subject">Matematika</span></h3>
+        <h3 id="subject-title">Subjek: <span id="current-subject">Loading...</span></h3>
         <label for="subject">Pilih Mata Pelajaran:</label>
         <select id="subject" name="subject">
-          <option value="matematika">Matematika</option>
-          <option value="bahasa indonesia">Bahasa Indonesia</option>
-          <option value="pengetahuan umum">Pengetahuan Umum</option>
-        </select>
+          </select>
       </header>
-
-      <section class="chat-container" id="chat-container">
-        <!-- Chat muncul di sini -->
-      </section>
-
-      <section class="chat-input">
-        <input type="text" id="message" placeholder="Tulis pertanyaan kamu..." />
+      <div id="chat-container" class="chat-container">
+        </div>
+      <footer class="chat-input">
+        <input type="text" id="message-input" placeholder="Ketik pesan Anda...">
         <button id="send-btn">Kirim</button>
-      </section>
+      </footer>
     </main>
-
   </div>
-  
-  <div id="modal-overlay" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+
+  <div id="link-account-modal" class="modal hidden">
     <div class="modal-content">
-      <h3 id="modal-title">Sinkronkan Data?</h3>
-      <p>Kami menemukan riwayat percakapan saat kamu sebagai tamu. Ingin digabung ke akun Google kamu?</p>
+      <h3>Gabungkan Akun?</h3>
+      <p>Anda saat ini menggunakan akun tamu. Apakah Anda ingin menghubungkan riwayat percakapan Anda ke akun Google ini?</p>
       <div class="modal-actions">
-        <button id="modal-confirm">Ya, Gabungkan</button>
-        <button id="modal-cancel">Tidak, Abaikan</button>
+        <button id="modal-link-account">Gabungkan</button>
+        <button id="modal-start-new">Mulai Baru</button>
       </div>
     </div>
   </div>
 
-  <script type="module" src="js/main.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, signInAnonymously, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut, linkWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, collection, doc, addDoc, getDoc, updateDoc, deleteDoc, query, where, orderBy, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    // Konfigurasi Firebase Anda (Ganti dengan kunci API Anda yang sebenarnya!)
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    // Inisialisasi Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const googleProvider = new GoogleAuthProvider();
+
+    // Export Firebase instances agar bisa diakses di main.js
+    window.firebaseApp = app;
+    window.firebaseAuth = auth;
+    window.firebaseDb = db;
+    window.googleAuthProvider = googleProvider;
+    window.firebaseServerTimestamp = serverTimestamp; // Untuk timestamp server
+    window.firebaseGetDoc = getDoc;
+    window.firebaseUpdateDoc = updateDoc;
+    window.firebaseDeleteDoc = deleteDoc;
+    window.firebaseQuery = query;
+    window.firebaseWhere = where;
+    window.firebaseOrderBy = orderBy;
+    window.firebaseGetDocs = getDocs;
+    window.firebaseCollection = collection;
+    window.firebaseAddDoc = addDoc;
+    window.firebaseSignInAnonymously = signInAnonymously;
+    window.firebaseOnAuthStateChanged = onAuthStateChanged;
+    window.firebaseSignInWithPopup = signInWithPopup;
+    window.firebaseSignOut = signOut;
+    window.firebaseLinkWithPopup = linkWithPopup;
+
+  </script>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>
