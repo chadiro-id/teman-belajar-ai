@@ -349,7 +349,7 @@ newChatBtn.addEventListener("click", () => {
 });
 
 // == Auth Logic ==
-signInAnonymously(auth).catch(console.error);
+// signInAnonymously(auth).catch(console.error);
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
