@@ -477,16 +477,19 @@ sendBtn.addEventListener("click", async () => {
   try {
     const res = await fetch("https://temanbelajarcr-backend-app.delightfulpebble-0c5b36fd.southeastasia.azurecontainerapps.io/api/chat_with_ai", {
       method: "POST",
-      headers: { "Content-Type": "application/json", ...(idToken && { 'Authorization': `Bearer ${idToken}` }) },
+      headers: {
+        "Content-Type": "application/json",
+        // ...(idToken && { 'Authorization': `Bearer ${idToken}`})
+      },
       body: JSON.stringify({
         message,
-        subject: currentSubject,
         chat_history: activeConversation.history.map(msg => ({ role: msg.role, content: msg.content })),
         system_prompt: systemPromptToSend
       })
     });
 
     const data = await res.json();
+    console.log(data.response);
 
     if (res.ok) {
       addMessageToActiveChat("assistant", data.response);
