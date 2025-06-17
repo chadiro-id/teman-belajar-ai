@@ -1,5 +1,3 @@
-// main.js
-
 // Import Firebase instances from window (exposed by index.html)
 const app = window.firebaseApp;
 const auth = window.firebaseAuth;
@@ -437,15 +435,16 @@ async function loadConversationsForAuthenticatedUser() {
       };
     });
 
-    if (Object.keys(allConversations).length > 0) {
-      // Select the most recently updated conversation
-      const latestConvoId = Object.keys(allConversations).reduce((a, b) => {
-        return allConversations[a].updated_at > allConversations[b].updated_at ? a : b;
-      }, Object.keys(allConversations)[0]);
-      await selectConversation(latestConvoId);
-    } else {
-      startNewChat(); // If no conversations, start a new one
-    }
+    // if (Object.keys(allConversations).length > 0) {
+    //   // Select the most recently updated conversation
+    //   const latestConvoId = Object.keys(allConversations).reduce((a, b) => {
+    //     return allConversations[a].updated_at > allConversations[b].updated_at ? a : b;
+    //   }, Object.keys(allConversations)[0]);
+    //   await selectConversation(latestConvoId);
+    // } else {
+    //   startNewChat(); // If no conversations, start a new one
+    // }
+    startNewChat();
     updateConversationListUI();
 
   } catch (err) {
