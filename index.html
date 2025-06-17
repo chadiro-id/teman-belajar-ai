@@ -8,46 +8,52 @@
   <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-  <div class="app-container">
-    
-    <nav class="sidebar">
-      <header>
-        <h2>Teman Belajar</h2>
-        <div id="current-user-avatar" class="avatar-container">
-          <img src="https://api.dicebear.com/7.x/icons/svg?seed=initial" alt="User" class="avatar" title="Klik untuk login/logout" />
-          <span id="current-user-label">Loading...</span>
-        </div>
-      </header>
-      <section class="nav-actions">
-        <button id="new-chat-btn">+ Buat Percakapan Baru</button>
-        <h4>Riwayat</h4>
-        <ul id="conversation-list"></ul>
-      </section>
-    </nav>
-
-    <main class="chat-area">
-      <header class="chat-header">
+  <div id="app-container">
+    <main id="chat-app" class="chat-app">
+      <header class="chat-app__header">
         <h3 id="subject-title">Subjek: <span id="current-subject">Loading...</span></h3>
         <label for="subject">Pilih Mata Pelajaran:</label>
-        <select id="subject" name="subject">
-          </select>
+        <select id="subject" name="subject"></select>
       </header>
-      <div id="chat-container" class="chat-container">
+      <div class="chat-app__content-container">
+        <div id="chat-container" class="chat-container"></div>
+        <div class="chat-input">
+          <input type="text" id="message-input" placeholder="Ketik pesan Anda...">
+          <button id="send-btn">Kirim</button>
         </div>
-      <footer class="chat-input">
-        <input type="text" id="message-input" placeholder="Ketik pesan Anda...">
-        <button id="send-btn">Kirim</button>
-      </footer>
+      </div>
+      <footer class="chat-app__footer"></footer>
     </main>
+    
+    <div id="sidesheet" class="sidesheet">
+      <header class="sidesheet__header">
+        <h2>Teman Belajar</h2>
+        <div class="current-user">
+          <img src="https://api.dicebear.com/7.x/icons/svg?seed=initial" alt="User avatar" class="current-user__avatar" title="Klik untuk login/logout" />
+          <span id="current-user__label">Loading...</span>
+        </div>
+      </header>
+      <section class="sidesheet__content">
+        <button id="new-chat-btn">+ Buat Percakapan Baru</button>
+        <h4></h4>
+        <ul id="conversation-list"></ul>
+      </section>
+      <footer></footer>
+    </div>
   </div>
-
-  <div id="link-account-modal" class="modal hidden">
-    <div class="modal-content">
-      <h3>Gabungkan Akun?</h3>
-      <p>Anda saat ini menggunakan akun tamu. Apakah Anda ingin menghubungkan riwayat percakapan Anda ke akun Google ini?</p>
-      <div class="modal-actions">
-        <button id="modal-link-account">Gabungkan</button>
-        <button id="modal-start-new">Mulai Baru</button>
+  
+  <div id="modal-container" class="modal-container">
+    <div id="link-account-modal" class="modal">
+      <div class="modal__overlay"></div>
+      <div class="modal__content-container">
+        <div class="modal__content">
+          <h3>Gabungkan Akun?</h3>
+          <p>Anda saat ini menggunakan akun tamu. Apakah Anda ingin menghubungkan riwayat percakapan Anda ke akun Google ini?</p>
+          <div class="modal__actions">
+            <button id="modal-link-account">Gabungkan</button>
+            <button id="modal-start-new">Mulai Baru</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
