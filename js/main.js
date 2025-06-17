@@ -5,6 +5,7 @@ const db = window.firebaseDb;
 const googleProvider = window.googleAuthProvider;
 const serverTimestamp = window.firebaseServerTimestamp;
 const getDoc = window.firebaseGetDoc;
+const doc = window.firebaseDoc;
 const updateDoc = window.firebaseUpdateDoc;
 const deleteDoc = window.firebaseDeleteDoc;
 const query = window.firebaseQuery;
