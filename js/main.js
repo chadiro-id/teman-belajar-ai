@@ -201,6 +201,7 @@ function updateConversationListUI() {
 
   conversationsArray.sort((a, b) => b.updated_at - a.updated_at); // Sort by most recent update
   for (const convo of conversationsArray) {
+    if (convo.history === false) continue;
     const li = document.createElement("li");
     li.classList.add("conversation-item");
     if (activeConversation && activeConversation.id === convo.id) {
