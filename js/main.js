@@ -474,6 +474,7 @@ sendBtn.addEventListener("click", async () => {
   messageInput.value = "";
 
   const systemPromptToSend = getSystemPromptBySubject(activeConversation.subject);
+  console.log(systemPromptToSend);
 
   try {
     const res = await fetch("https://temanbelajarcr-backend-app.delightfulpebble-0c5b36fd.southeastasia.azurecontainerapps.io/api/chat_with_ai", {
@@ -518,7 +519,7 @@ async function loadSubjects() {
     querySnapshot.forEach((doc) => {
       const subjectData = doc.data();
       if (subjectData.name) {
-        availableSubjects.push({ name: subjectData.name, prompt: subjectData.prompt });
+        availableSubjects.push({ name: subjectData.name, prompt: subjectData.system_prompt });
         const option = document.createElement("option");
         option.value = subjectData.name.toLowerCase();
         option.textContent = subjectData.name;
@@ -534,6 +535,7 @@ async function loadSubjects() {
       subjectTitleEl.textContent = `Subjek: ${subjectSelect.value}`;
       currentSubjectEl.textContent = subjectSelect.value;
     }
+    console.log(availableSubjects[availableSubjects.length - 1].name);
 
   } catch (err) {
     console.error("❌ Gagal memuat subjek:", err);
@@ -558,8 +560,13 @@ async function loadSubjects() {
 
 // Function to find system prompt by subject name
 function getSystemPromptBySubject(subjectName) {
-    const found = availableSubjects.find(s => s.name.toLowerCase() === subjectName.toLowerCase());
-    return found ? found.prompt : "You are a helpful AI assistant."; // Default prompt
+  console.log("Available Subjects length: " + availableSubjects.length);
+  availableSubjects.forEach(item => {
+    console.log("item: " + item.name.toLowerCase() + " equal with " + subjectName.toLowerCase() + " " + (item.name.toLowerCase() === subjectName.toLowerCase()));
+  });
+  const found = availableSubjects.find(s => s.name.toLowerCase() === subjectName.toLowerCase());
+  console.log(`get system prompt: ${subjectName} - ${found}` + found?.prompt);
+  return found ? found.prompt : "You are a helpful AI assistant."; // Default prompt
 }
 
 loadSubjects();
