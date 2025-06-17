@@ -56,6 +56,122 @@ function renderMarkdown(markdownText) {
     .replace(/```(.*?)```/gs, '<pre><code>$1</code></pre>');
 }
 
+function markdownToHtml(markdown) {
+  const lines = markdown.split('\n');
+  let html = '';
+  let inList = false;
+  let inOrderedList = false;
+  let inCodeBlock = false;
+  
+  for (let i = 0; i < lines.length; i++) {
+    let line = lines[i];
+    
+    // Handle code blocks
+    if (line.startsWith('```')) {
+      if (inCodeBlock) {
+        html += '</code></pre>\n';
+        inCodeBlock = false;
+      } else {
+        html += '<pre><code>';
+        inCodeBlock = true;
+      }
+      continue;
+    }
+    
+    if (inCodeBlock) {
+      html += line + '\n';
+      continue;
+    }
+    
+    // Handle headers
+    if (line.match(/^#{1,6}\s/)) {
+      const level = line.match(/^#+/)[0].length;
+      const text = line.replace(/^#+\s/, '');
+      html += `<h${level}>${processInlineMarkdown(text)}</h${level}>\n`;
+      continue;
+    }
+    
+    // Handle unordered lists
+    if (line.match(/^\s*[-*]\s+/)) {
+      if (!inList) {
+        html += '<ul>\n';
+        inList = true;
+      }
+      const text = line.replace(/^\s*[-*]\s+/, '');
+      html += `<li>${processInlineMarkdown(text)}</li>\n`;
+      continue;
+    }
+    
+    // Handle ordered lists
+    if (line.match(/^\s*\d+\.\s+/)) {
+      if (!inOrderedList) {
+        html += '<ol>\n';
+        inOrderedList = true;
+      }
+      const text = line.replace(/^\s*\d+\.\s+/, '');
+      html += `<li>${processInlineMarkdown(text)}</li>\n`;
+      continue;
+    }
+    
+    // Close lists if we're not in one anymore
+    if (inList && !line.match(/^\s*[-*]\s+/)) {
+      html += '</ul>\n';
+      inList = false;
+    }
+    
+    if (inOrderedList && !line.match(/^\s*\d+\.\s+/)) {
+      html += '</ol>\n';
+      inOrderedList = false;
+    }
+    
+    // Handle blockquotes
+    if (line.startsWith('> ')) {
+      const text = line.replace(/^>\s+/, '');
+      html += `<blockquote>${processInlineMarkdown(text)}</blockquote>\n`;
+      continue;
+    }
+    
+    // Handle empty lines
+    if (line.trim() === '') {
+      html += '\n';
+      continue;
+    }
+    
+    // Handle regular paragraphs
+    html += `<p>${processInlineMarkdown(line)}</p>\n`;
+  }
+  
+  // Close any remaining lists
+  if (inList) html += '</ul>\n';
+  if (inOrderedList) html += '</ol>\n';
+  
+  return html.trim();
+}
+
+function processInlineMarkdown(text) {
+  let result = text;
+  
+  // Bold
+  result = result.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  result = result.replace(/__(.*?)__/g, '<strong>$1</strong>');
+  
+  // Italic
+  result = result.replace(/\*(.*?)\*/g, '<em>$1</em>');
+  result = result.replace(/_(.*?)_/g, '<em>$1</em>');
+  
+  // Inline code
+  result = result.replace(/`(.*?)`/g, '<code>$1</code>');
+  
+  // Images
+  result = result.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" />');
+  
+  // Links
+  result = result.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+  
+  return result;
+}
+
+
 // Update UI based on activeConversation
 function renderChat() {
   chatContainer.innerHTML = "";
@@ -69,7 +185,7 @@ function renderChat() {
     const li = document.createElement("li");
     li.className = `chat-bubble ${entry.role}`;
     if (entry.role === "assistant") {
-      li.innerHTML = renderMarkdown(entry.content); // Use .content
+      li.innerHTML = markdownToHtml(entry.content); // Use .content
     } else {
       li.textContent = entry.content; // Use .content
     }
@@ -560,13 +676,8 @@ async function loadSubjects() {
 
 // Function to find system prompt by subject name
 function getSystemPromptBySubject(subjectName) {
-  console.log("Available Subjects length: " + availableSubjects.length);
-  availableSubjects.forEach(item => {
-    console.log("item: " + item.name.toLowerCase() + " equal with " + subjectName.toLowerCase() + " " + (item.name.toLowerCase() === subjectName.toLowerCase()));
-  });
   const found = availableSubjects.find(s => s.name.toLowerCase() === subjectName.toLowerCase());
-  console.log(`get system prompt: ${subjectName} - ${found}` + found?.prompt);
-  return found ? found.prompt : "You are a helpful AI assistant."; // Default prompt
+  return found ? found.prompt : "You are a helpful AI assistant.";
 }
 
 loadSubjects();
