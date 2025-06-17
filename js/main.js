@@ -377,7 +377,7 @@ async function renameConversation(convoId) {
       updated_at: serverTimestamp()
     });
     alert("✅ Berhasil di-rename!");
-    // loadConversations();
+    loadConversationsForAuthenticatedUser();
   } catch (err) {
     console.error("❌ Gagal rename:", err);
     alert("Gagal rename percakapan.");
@@ -391,7 +391,7 @@ async function deleteConversation(convoId) {
   try {
     await deleteDoc(doc(db, "conversations", convoId));
     alert("🗑️ Percakapan dihapus.");
-    // loadConversations();
+    loadConversationsForAuthenticatedUser();
   } catch (err) {
     console.error("❌ Gagal hapus:", err);
     alert("Gagal menghapus percakapan.");
