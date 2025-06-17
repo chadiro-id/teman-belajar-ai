@@ -199,38 +199,38 @@ function updateConversationListUI() {
   conversationList.innerHTML = "";
   const conversationsArray = Object.values(allConversations);
 
-  conversationsArray
-    .sort((a, b) => b.updated_at - a.updated_at) // Sort by most recent update
-    .forEach((convo) => {
-      const li = document.createElement("li");
-      li.classList.add("conversation-item");
-      if (activeConversation && activeConversation.id === convo.id) {
-        li.classList.add("active");
-      }
-
-      const label = document.createElement("span");
-      label.textContent = `${convo.subject} - ${new Date(convo.updated_at).toLocaleTimeString()}`;
-      label.className = "clickable-label";
-      label.addEventListener("click", () => selectConversation(convo.id));
-
-      const renameBtn = document.createElement("button");
-      renameBtn.textContent = "✏️";
-      renameBtn.title = "Rename";
-      renameBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        renameConversation(convo.id);
-      });
-      const deleteBtn = document.createElement("button");
-      deleteBtn.textContent = "🗑️";
-      deleteBtn.title = "Delete";
-      deleteBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        deleteConversation(convo.id);
-      });
-
-      li.append(label, renameBtn, deleteBtn);
-      conversationList.appendChild(li);
+  conversationsArray.sort((a, b) => b.updated_at - a.updated_at); // Sort by most recent update
+  for (const convo of conversationsArray) {
+    const li = document.createElement("li");
+    li.classList.add("conversation-item");
+    if (activeConversation && activeConversation.id === convo.id) {
+      li.classList.add("active");
+    }
+    
+    const label = document.createElement("span");
+    label.textContent = `${convo.subject} - ${new Date(convo.updated_at).toLocaleTimeString()}`;
+    label.className = "clickable-label";
+    label.addEventListener("click", () => selectConversation(convo.id));
+    
+    const renameBtn = document.createElement("button");
+    renameBtn.textContent = "✏️";
+    renameBtn.title = "Rename";
+    renameBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      renameConversation(convo.id);
     });
+    
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "🗑️";
+    deleteBtn.title = "Delete";
+    deleteBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      deleteConversation(convo.id);
+    });
+    
+    li.append(label, renameBtn, deleteBtn);
+    conversationList.appendChild(li);
+  }
 }
 
 // == Core Chat & Conversation Management ==
