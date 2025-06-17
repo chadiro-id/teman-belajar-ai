@@ -201,7 +201,7 @@ function updateConversationListUI() {
 
   conversationsArray.sort((a, b) => b.updated_at - a.updated_at); // Sort by most recent update
   for (const convo of conversationsArray) {
-    if (convo.history === false) continue;
+    if (convo.history && convo.history.length === 0) continue;
     const li = document.createElement("li");
     li.classList.add("conversation-item");
     if (activeConversation && activeConversation.id === convo.id) {
@@ -293,64 +293,132 @@ async function selectConversation(conversationId) {
 }
 
 // Saves/updates the current activeConversation to Firestore
+// async function saveConversationToFirestore() {
+//   if (!activeConversation || !currentUserId) return;
+
+//   try {
+//     let conversationRef;
+//     if (activeConversation.id.startsWith("temp-")) {
+//       // This is a new conversation (first message sent)
+//       const newDocRef = await addDoc(collection(db, "conversations"), {
+//         user_id: currentUserId,
+//         subject: activeConversation.subject,
+//         created_at: serverTimestamp(),
+//         updated_at: serverTimestamp()
+//       });
+//       activeConversation.id = newDocRef.id; // Update temp ID to actual Firestore ID
+//       conversationRef = newDocRef;
+
+//       // Now add all messages from local history to the new subcollection
+//       for (const msg of activeConversation.history) {
+//         await addDoc(collection(db, "conversations", activeConversation.id, "messages"), {
+//           role: msg.role,
+//           content: msg.content, // Use .content
+//           timestamp: serverTimestamp()
+//         });
+//       }
+//       console.log("✅ Percakapan baru berhasil dibuat di Firestore:", activeConversation.id);
+
+//     } else {
+//       // Existing conversation: update metadata and add only the new messages
+//       conversationRef = doc(db, "conversations", activeConversation.id);
+//       await updateDoc(conversationRef, {
+//         updated_at: serverTimestamp()
+//       });
+
+//       // Add only the very last message(s) to the subcollection
+//       // (assuming activeConversation.history has new messages since last save)
+//       const lastSentMessages = activeConversation.history.slice(-2); // User message + AI response
+//       for (const msg of lastSentMessages) {
+//         if (msg.timestamp > (activeConversation.lastSavedTimestamp || 0)) { // Only save new ones
+//           await addDoc(collection(db, "conversations", activeConversation.id, "messages"), {
+//             role: msg.role,
+//             content: msg.content, // Use .content
+//             timestamp: serverTimestamp()
+//           });
+//         }
+//       }
+//       console.log("✅ Percakapan berhasil diperbarui di Firestore:", activeConversation.id);
+//     }
+
+//     // Update allConversations and UI after successful save
+//     allConversations[activeConversation.id] = {
+//       id: activeConversation.id,
+//       user_id: activeConversation.user_id,
+//       subject: activeConversation.subject,
+//       created_at: activeConversation.created_at, // Keep original creation time
+//       updated_at: Date.now() // Use local timestamp for sorting UI immediately
+//     };
+//     activeConversation.lastSavedTimestamp = Date.now(); // Mark last saved time for partial updates
+//     updateConversationListUI();
+
+//   } catch (e) {
+//     console.error("❌ Gagal simpan/perbarui Firestore:", e);
+//   }
+// }
+// main.js - inside saveConversationToFirestore()
+
 async function saveConversationToFirestore() {
   if (!activeConversation || !currentUserId) return;
 
   try {
     let conversationRef;
-    if (activeConversation.id.startsWith("temp-")) {
-      // This is a new conversation (first message sent)
+    const isNewConversation = activeConversation.id.startsWith("temp-");
+    const oldTempId = activeConversation.id; // Simpan ID sementara sebelum diubah
+
+    if (isNewConversation) {
+      // Ini adalah percakapan baru (pesan pertama dikirim)
       const newDocRef = await addDoc(collection(db, "conversations"), {
         user_id: currentUserId,
         subject: activeConversation.subject,
         created_at: serverTimestamp(),
         updated_at: serverTimestamp()
       });
-      activeConversation.id = newDocRef.id; // Update temp ID to actual Firestore ID
+      activeConversation.id = newDocRef.id; // Update temp ID ke ID Firestore asli
       conversationRef = newDocRef;
 
-      // Now add all messages from local history to the new subcollection
+      // Hapus entri lama dengan ID sementara dari allConversations
+      delete allConversations[oldTempId];
+
+      // Tambahkan semua pesan dari histori lokal ke subkoleksi baru
       for (const msg of activeConversation.history) {
         await addDoc(collection(db, "conversations", activeConversation.id, "messages"), {
           role: msg.role,
-          content: msg.content, // Use .content
+          content: msg.content,
           timestamp: serverTimestamp()
         });
       }
       console.log("✅ Percakapan baru berhasil dibuat di Firestore:", activeConversation.id);
 
     } else {
-      // Existing conversation: update metadata and add only the new messages
+      // Percakapan yang sudah ada: update metadata dan tambahkan hanya pesan baru
       conversationRef = doc(db, "conversations", activeConversation.id);
       await updateDoc(conversationRef, {
         updated_at: serverTimestamp()
       });
 
-      // Add only the very last message(s) to the subcollection
-      // (assuming activeConversation.history has new messages since last save)
-      const lastSentMessages = activeConversation.history.slice(-2); // User message + AI response
-      for (const msg of lastSentMessages) {
-        if (msg.timestamp > (activeConversation.lastSavedTimestamp || 0)) { // Only save new ones
-          await addDoc(collection(db, "conversations", activeConversation.id, "messages"), {
-            role: msg.role,
-            content: msg.content, // Use .content
-            timestamp: serverTimestamp()
-          });
-        }
-      }
+      // Tambahkan hanya pesan TERAKHIR (yang baru ditambahkan) ke subkoleksi messages
+      // Kita asumsikan history hanya bertambah, jadi pesan terakhir adalah yang terbaru
+      const lastMessage = activeConversation.history[activeConversation.history.length - 1];
+      await addDoc(collection(db, "conversations", activeConversation.id, "messages"), {
+        role: lastMessage.role,
+        content: lastMessage.content,
+        timestamp: serverTimestamp()
+      });
       console.log("✅ Percakapan berhasil diperbarui di Firestore:", activeConversation.id);
     }
 
-    // Update allConversations and UI after successful save
+    // Perbarui atau tambahkan entri dengan ID Firestore yang benar ke allConversations
+    // Ini penting karena ID sekarang adalah ID Firestore yang persisten
     allConversations[activeConversation.id] = {
       id: activeConversation.id,
       user_id: activeConversation.user_id,
       subject: activeConversation.subject,
-      created_at: activeConversation.created_at, // Keep original creation time
-      updated_at: Date.now() // Use local timestamp for sorting UI immediately
+      created_at: activeConversation.created_at,
+      updated_at: Date.now() // Gunakan local timestamp untuk sorting UI segera
     };
-    activeConversation.lastSavedTimestamp = Date.now(); // Mark last saved time for partial updates
-    updateConversationListUI();
+    activeConversation.lastSavedTimestamp = Date.now();
+    updateConversationListUI(); // Perbarui UI daftar percakapan
 
   } catch (e) {
     console.error("❌ Gagal simpan/perbarui Firestore:", e);
