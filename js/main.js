@@ -46,16 +46,6 @@ let availableSubjects = []; // Stores subjects fetched from Firestore
 
 // == Helper Functions ==
 
-// Function to render Markdown (if you have one, otherwise just return text)
-function renderMarkdown(markdownText) {
-  // Implement a markdown renderer library (e.g., marked.js) if needed.
-  // For now, a basic placeholder.
-  return markdownText
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-    .replace(/```(.*?)```/gs, '<pre><code>$1</code></pre>');
-}
-
 function markdownToHtml(markdown) {
   const lines = markdown.split('\n');
   let html = '';
@@ -170,7 +160,6 @@ function processInlineMarkdown(text) {
   
   return result;
 }
-
 
 // Update UI based on activeConversation
 function renderChat() {
