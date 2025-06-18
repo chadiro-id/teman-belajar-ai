@@ -187,7 +187,7 @@ function updateConversationListUI() {
       </svg>`
       btnAction.addEventListener("click", (evt) => {
         evt.stopPropagation();
-        actionContainer.style.visibility = "visible";
+        actionContainer.classList.add("conversations-item__actions--visible");
         const popup = popupMenu(actionContainer, ["rename", "delete"]);
         popup.addEventListener("itemClick", (evt) => {
           if (evt.detail.menu == "rename") {
@@ -198,7 +198,7 @@ function updateConversationListUI() {
           }
         });
         popup.addEventListener("detach", () => {
-          actionContainer.style.visibility = "hidden";
+          actionContainer.classList.remove("conversations-item__actions--visible");
           console.log("popup detached");
         });
       });
