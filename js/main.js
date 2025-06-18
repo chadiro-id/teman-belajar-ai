@@ -39,7 +39,6 @@ const conversationsList = document.getElementById("conversations-list");
 const sidenav = document.getElementById("sidenav");
 const btnToggleSidenav = document.getElementById("btn-toggle-sidenav");
 const btnToggleSidenavExpanded = document.getElementById("btn-toggle-sidenav-expanded");
-const elBrand = document.getElementById("brand");
 
 // Modal elements (assuming you have these in index.html)
 // const linkAccountModal = document.getElementById("link-account-modal");
@@ -636,7 +635,6 @@ function toggleSidenavExpanded() {
   sidenav.classList.toggle("sidenav--expanded-full");
   const isFullyExpanded = sidenav.classList.contains("sidenav--expanded-full");
   newChatBtn.querySelector(".tb-button__label").classList.toggle("sr-only", !isFullyExpanded);
-  elBrand.querySelector(".brand__name").classList.toggle("sr-only", !isFullyExpanded);
 }
 
 // == Initial Load & Data Fetching ==

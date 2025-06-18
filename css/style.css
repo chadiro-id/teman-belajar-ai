@@ -142,6 +142,7 @@ button {
 
 .app-container {
   display: flex;
+  flex-direction: row-reverse;
   height: 100vh;
   overflow: hidden;
 }

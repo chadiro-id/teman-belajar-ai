@@ -14,6 +14,27 @@
 </head>
 <body>
   <div id="app-container" class="app-container">
+    <main id="chat-app" class="chat-app">
+      <header class="chat-app__header">
+        <div class="app-brand">
+          <h1 class="app-brand__name">Teman Belajar</h1>
+        </div>
+        <div class="app-menu">
+          <select id="subject" aria-label="Pilih mata pelajaran"></select>
+        </div>
+      </header>
+      <div class="chat-app__content">
+        <div id="chat-container" class="chat-container"></div>
+      </div>
+      <footer class="chat-app__footer">
+        <div class="chat-input">
+          <input type="text" id="chat-input__message" placeholder="Ketik pesan Anda...">
+          <button type="button" id="chat-input__send-button">Kirim</button>
+        </div>
+        <p class="chat-info">Model AI bisa membuat kesalahan, selalu periksa kembali</p>
+      </footer>
+    </main>
+    
     <div id="sidenav-control" class="sidenav-control">
       <button type="button" id="btn-toggle-sidenav" class="tb-button btn-toggle-sidenav" aria-label="Toggle sidenav">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -24,12 +45,28 @@
     <nav id="sidenav" class="sidenav sidenav--expanded">
       <header class="sidenav__header">
         <div class="sidenav__header-inner">
-          <div id="brand">
-            <h1 class="brand__name sr-only">Teman Belajar</h1>
-          </div>
           <button type="button" id="btn-toggle-sidenav-expanded" class="tb-button btn-toggle-sidenav-expanded" aria-label="Toggle sidenav full width">
             <svg xmlns="http://www.w3.org/2000/svg" class="tb-button__icon" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
               <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+          </button>
+          <button type="button" id="btn-toggle-theme"class="tb-button btn-toggle-theme"  title="Toggles light & dark" aria-label="auto" aria-live="polite">
+            <svg class="ic-toggle-theme" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24">
+              <mask class="moon" id="moon-mask">
+                <rect x="0" y="0" width="100%" height="100%" fill="white" />
+                <circle cx="24" cy="10" r="6" fill="black" />
+              </mask>
+              <circle class="sun" cx="12" cy="12" r="6" mask="url(#moon-mask)" fill="currentColor" />
+              <g class="sun-beams" stroke="currentColor">
+                <line x1="12" y1="1" x2="12" y2="3" />
+                <line x1="12" y1="21" x2="12" y2="23" />
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                <line x1="1" y1="12" x2="3" y2="12" />
+                <line x1="21" y1="12" x2="23" y2="12" />
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+              </g>
             </svg>
           </button>
         </div>
@@ -57,23 +94,6 @@
         </div>
       </footer>
     </nav>
-
-    <main id="chat-app" class="chat-app">
-      <header class="chat-app__header">
-        <h2>Chat Title</h2>
-        <select id="subject" aria-label="Pilih mata pelajaran"></select>
-      </header>
-      <div class="chat-app__content">
-        <div id="chat-container" class="chat-container"></div>
-      </div>
-      <footer class="chat-app__footer">
-        <div class="chat-input">
-          <input type="text" id="chat-input__message" placeholder="Ketik pesan Anda...">
-          <button type="button" id="chat-input__send-button">Kirim</button>
-        </div>
-        <p class="chat-info">Model AI bisa membuat kesalahan, selalu periksa kembali</p>
-      </footer>
-    </main>
   </div>
 
   <div id="app-overlay" class="app-overlay">
