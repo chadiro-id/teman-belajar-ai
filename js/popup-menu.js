@@ -36,19 +36,27 @@ const popupMenu = (boundingRect, menus = [], title = "") => {
     popupMenuEl.remove();
   });
 
+  popupMenuEl.addEventListener("keydown", (evt) => {
+    if (evt.key === "Escape") {
+      console.log("Escaped");
+      popupMenuEl.dispatchEvent(new Event("detach"));
+      popupMenuEl.remove();
+    }
+  });
+
   popupMenuEl.appendChild(menuList);
 
   const overlay = document.getElementById("app-overlay");
   overlay.appendChild(popupMenuEl);
 
   let top = boundingRect.top + window.scrollY;
-  let left = boundingRect.left + window.scrollX
+  let left = boundingRect.left + boundingRect.width + window.scrollX + 16
   if (top + popupMenuEl.offsetHeight > window.innerHeight + window.scrollY) {
-    top = boundingRect.top + window.scrollY - popupMenuEl.offsetHeight - 5;
+    top = boundingRect.top + window.scrollY - popupMenuEl.offsetHeight - 16;
   }
 
   if (left + popupMenuEl.offsetWidth > window.innerWidth + window.scrollX) {
-    left = boundingRect.left + window.scrollX - popupMenuEl.offsetWidth - 5;
+    left = boundingRect.left + window.scrollX - popupMenuEl.offsetWidth - 16;
   }
 
   popupMenuEl.style.top = `${top}px`;
