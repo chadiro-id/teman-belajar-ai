@@ -5,30 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="dicoding:email" content="chadiro.dev@gmail.com">
   <title>Teman Belajar AI</title>
-  
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Courgette&family=Jost:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
   <div id="app-container" class="app-container">
     <div id="sidenav-control" class="sidenav-control">
-      <button type="button" id="btn-toggle-sidenav" aria-label="Toggle sidenav">
+      <button type="button" id="btn-toggle-sidenav" class="tb-button btn-toggle-sidenav" aria-label="Toggle sidenav">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
         </svg>
       </button>
     </div>
-    <nav id="sidenav" class="sidenav">
+    <nav id="sidenav" class="sidenav sidenav--expanded">
       <header class="sidenav__header">
         <div class="sidenav__header-inner">
           <div id="brand">
-            <h1 class="brand__name">Teman Belajar</h1>
+            <h1 class="brand__name sr-only">Teman Belajar</h1>
           </div>
-          <button type="button" id="btn-toggle-sidenav-fullwidth" aria-label="Toggle sidenav full width">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+          <button type="button" id="btn-toggle-sidenav-expanded" class="tb-button btn-toggle-sidenav-expanded" aria-label="Toggle sidenav full width">
+            <svg xmlns="http://www.w3.org/2000/svg" class="tb-button__icon" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
               <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
             </svg>
           </button>
@@ -36,22 +36,22 @@
       </header>
       <div class="sidenav__content">
         <div class="sidenav__content-inner">
-          <button type="button" id="new-chat-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+          <button type="button" id="new-chat-btn" class="tb-button btn-new-chat">
+            <svg xmlns="http://www.w3.org/2000/svg" class="tb-button__icon" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
             </svg>
-            <span>+ Buat Percakapan Baru</span>
+            <span class="tb-button__label sr-only">+ Buat Percakapan Baru</span>
           </button>
-          <section id="conversations" class="conversation-container">
-            <span>Baru baru ini</span>
-            <ul id="conversation-list" class="conversation-list"></ul>
+          <section id="conversations" class="conversations-container">
+            <h2 class="conversations-heading">Baru baru ini</h2>
+            <ul id="conversations-list" class="conversations-list"></ul>
           </section>
         </div>
       </div>
       <footer class="sidenav__footer">
         <div class="sidenav__footer-inner">
-          <div class="current-user">
-            <img src="https://api.dicebear.com/7.x/icons/svg?seed=initial" alt="User avatar" class="current-user__avatar" title="Klik untuk login/logout" />
+          <div id="current-user" class="current-user">
+            <div class="current-user__avatar"></div>
             <span class="current-user__label">Loading...</span>
           </div>
         </div>
@@ -75,8 +75,8 @@
       </footer>
     </main>
   </div>
-  
-  <div id="modal-container" class="modal-container">
+
+  <div id="app-overlay" class="app-overlay">
     <div id="link-account-modal" class="modal modal--hidden">
       <div class="modal__overlay"></div>
       <div class="modal__content-container">

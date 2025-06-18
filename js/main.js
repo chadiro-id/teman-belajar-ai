@@ -1,3 +1,5 @@
+import { popupMenu } from "./popup-menu.js";
+
 // Import Firebase instances from window (exposed by index.html)
 const app = window.firebaseApp;
 const auth = window.firebaseAuth;
@@ -30,12 +32,14 @@ const chatContainer = document.getElementById("chat-container");
 const sendBtn = document.getElementById("chat-input__send-button");
 const messageInput = document.getElementById("chat-input__message");
 const newChatBtn = document.getElementById("new-chat-btn");
-const conversationList = document.getElementById("conversation-list");
+const conversationsList = document.getElementById("conversations-list");
 // const subjectTitleEl = document.getElementById("subject-title");
 // const currentSubjectEl = document.getElementById("current-subject");
 
 const sidenav = document.getElementById("sidenav");
 const btnToggleSidenav = document.getElementById("btn-toggle-sidenav");
+const btnToggleSidenavExpanded = document.getElementById("btn-toggle-sidenav-expanded");
+const elBrand = document.getElementById("brand");
 
 // Modal elements (assuming you have these in index.html)
 const linkAccountModal = document.getElementById("link-account-modal");
@@ -155,45 +159,72 @@ function addMessageToActiveChat(role, content) {
 
 // Update UI for list of conversations in sidebar
 function updateConversationListUI() {
-  conversationList.innerHTML = "";
+  conversationsList.innerHTML = "";
   const conversationsArray = Object.values(allConversations);
 
   conversationsArray
     .sort((a, b) => b.updated_at - a.updated_at) // Sort by most recent update
     .forEach((convo) => {
       const li = document.createElement("li");
-      li.classList.add("conversation-item");
+      li.classList.add("conversations-item");
       if (activeConversation && activeConversation.id === convo.id) {
-        li.classList.add("conversation-item--active");
+        li.classList.add("conversations-item--active");
       }
 
       const label = document.createElement("span");
       label.textContent = `${convo.subject} - ${new Date(convo.updated_at).toLocaleTimeString()}`;
-      label.className = "conversation-item__label";
+      label.className = "conversations-item__label";
       label.addEventListener("click", () => selectConversation(convo.id));
 
-      const actions = document.createElement("div");
-      actions.className = "conversation-item__actions";
+      const actionContainer = document.createElement("div");
+      actionContainer.className = "conversations-item__actions";
 
-      const renameBtn = document.createElement("button");
-      renameBtn.textContent = "✏️";
-      renameBtn.title = "Rename";
-      renameBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        renameConversation(convo.id);
+      const btnAction = document.createElement("button");
+      btnAction.className = "tb-button conversations-item__action-button";
+      btnAction.setAttribute("aria-label", "open popup menu action");
+      btnAction.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="tb-button__icon" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+      </svg>`
+      btnAction.addEventListener("click", (evt) => {
+        evt.stopPropagation();
+        actionContainer.style.visibility = "visible";
+        const popup = popupMenu(actionContainer, ["rename", "delete"]);
+        popup.addEventListener("itemClick", (evt) => {
+          if (evt.detail.menu == "rename") {
+            renameConversation(convo.id);
+          }
+          else if (evt.detail.menu == "delete") {
+            deleteConversation(convo.id);
+          }
+        });
+        popup.addEventListener("detach", () => {
+          actionContainer.style.visibility = "hidden";
+          console.log("popup detached");
+        });
       });
-      const deleteBtn = document.createElement("button");
-      deleteBtn.textContent = "🗑️";
-      deleteBtn.title = "Delete";
-      deleteBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        deleteConversation(convo.id);
-      });
 
-      actions.append(renameBtn, deleteBtn);
+      // const actions = document.createElement("div");
+      // actions.className = "conversations-item__actions";
 
-      li.append(label, actions);
-      conversationList.appendChild(li);
+      // const renameBtn = document.createElement("button");
+      // renameBtn.textContent = "✏️";
+      // renameBtn.title = "Rename";
+      // renameBtn.addEventListener("click", (e) => {
+      //   e.stopPropagation();
+      //   renameConversation(convo.id);
+      // });
+      // const deleteBtn = document.createElement("button");
+      // deleteBtn.textContent = "🗑️";
+      // deleteBtn.title = "Delete";
+      // deleteBtn.addEventListener("click", (e) => {
+      //   e.stopPropagation();
+      //   deleteConversation(convo.id);
+      // });
+
+      // actions.append(renameBtn, deleteBtn);
+      actionContainer.appendChild(btnAction);
+      li.append(label, actionContainer);
+      conversationsList.appendChild(li);
     });
 }
 
@@ -367,7 +398,9 @@ function updateAuthUI(user) {
   if (user) {
     currentUserId = user.uid;
     if (user.isAnonymous) {
-      currentUserAvatarEl.innerHTML = `<img src="https://api.dicebear.com/7.x/icons/svg?seed=${user.uid}" alt="Guest" class="avatar" title="Klik untuk login" />`;
+      currentUserAvatarEl.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+      </svg>`;
       currentUserLabelEl.textContent = "Tamu";
     } else {
       const photo = user.photoURL || `https://api.dicebear.com/7.x/icons/svg?seed=${user.uid}`;
@@ -422,7 +455,7 @@ async function loadConversationsForAuthenticatedUser() {
   if (!currentUserId) return;
 
   allConversations = {}; // Clear previous conversations
-  conversationList.innerHTML = ""; // Clear UI
+  conversationsList.innerHTML = ""; // Clear UI
 
   try {
     const q = query(
@@ -586,9 +619,20 @@ messageInput.addEventListener("keypress", function(event) {
     }
 });
 
-btnToggleSidenav.addEventListener("click", () => {
+btnToggleSidenav.addEventListener("click", toggleSidenav);
 
-});
+btnToggleSidenavExpanded.addEventListener("click", toggleSidenavExpanded)
+
+function toggleSidenav() {
+
+}
+
+function toggleSidenavExpanded() {
+  sidenav.classList.toggle("sidenav--expanded-full");
+  const isFullyExpanded = sidenav.classList.contains("sidenav--expanded-full");
+  newChatBtn.querySelector(".tb-button__label").classList.toggle("sr-only", !isFullyExpanded);
+  elBrand.querySelector(".brand__name").classList.toggle("sr-only", !isFullyExpanded);
+}
 
 // == Initial Load & Data Fetching ==
 
