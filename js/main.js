@@ -22,16 +22,17 @@ const linkWithPopup = window.firebaseLinkWithPopup;
 
 
 // == DOM Elements ==
-const currentUserAvatarEl = document.getElementById("current-user-avatar");
-const currentUserLabelEl = document.getElementById("current-user-label");
+const currentUserAvatarEl = document.querySelector(".current-user__avatar");
+const currentUserLabelEl = document.querySelector(".current-user__label");
 const subjectSelect = document.getElementById("subject");
+const chatWelcome = document.getElementById("chat-welcome");
 const chatContainer = document.getElementById("chat-container");
-const sendBtn = document.getElementById("send-btn");
-const messageInput = document.getElementById("message-input");
+const sendBtn = document.getElementById("chat-input__send-button");
+const messageInput = document.getElementById("chat-input__message");
 const newChatBtn = document.getElementById("new-chat-btn");
 const conversationList = document.getElementById("conversation-list");
-const subjectTitleEl = document.getElementById("subject-title");
-const currentSubjectEl = document.getElementById("current-subject");
+// const subjectTitleEl = document.getElementById("subject-title");
+// const currentSubjectEl = document.getElementById("current-subject");
 
 // Modal elements (assuming you have these in index.html)
 const linkAccountModal = document.getElementById("link-account-modal");
@@ -128,7 +129,7 @@ function appendChatMessageToDOM(role, content, targetList = null) {
   }
 
   const li = document.createElement("li");
-  li.className = `chat-bubble ${role}`;
+  li.className = `chat-bubble chat-bubble--${role}`;
   if (role === "assistant") {
     li.innerHTML = renderMarkdown(content);
   } else {
@@ -204,8 +205,8 @@ async function startNewChat() {
   // Add to allConversations temporarily so it shows in the list
   allConversations[activeConversation.id] = { ...activeConversation }; // Copy to avoid mutation issues
 
-  subjectTitleEl.textContent = `Subjek: ${activeConversation.subject}`;
-  currentSubjectEl.textContent = activeConversation.subject;
+  // subjectTitleEl.textContent = `Subjek: ${activeConversation.subject}`;
+  // currentSubjectEl.textContent = activeConversation.subject;
   messageInput.value = ""; // Clear input field
   renderFullChatHistory(); // Render an empty chat or placeholder
   updateConversationListUI();
@@ -223,8 +224,8 @@ async function selectConversation(conversationId) {
   activeConversation.history = []; // Initialize history to load messages
 
   subjectSelect.value = activeConversation.subject; // Update dropdown
-  subjectTitleEl.textContent = `Subjek: ${activeConversation.subject}`;
-  currentSubjectEl.textContent = activeConversation.subject;
+  // subjectTitleEl.textContent = `Subjek: ${activeConversation.subject}`;
+  // currentSubjectEl.textContent = activeConversation.subject;
   messageInput.value = ""; // Clear input field
 
   // Load messages from subcollection
@@ -495,8 +496,8 @@ currentUserAvatarEl.addEventListener("click", async () => {
 subjectSelect.addEventListener("change", () => {
   if (activeConversation) {
     activeConversation.subject = subjectSelect.value;
-    subjectTitleEl.textContent = `Subjek: ${activeConversation.subject}`;
-    currentSubjectEl.textContent = activeConversation.subject;
+    // subjectTitleEl.textContent = `Subjek: ${activeConversation.subject}`;
+    // currentSubjectEl.textContent = activeConversation.subject;
     
     // For existing conversations, update subject in Firestore
     if (!activeConversation.id.startsWith("temp-")) {
@@ -598,8 +599,8 @@ async function loadSubjects() {
     } else {
       subjectSelect.value = availableSubjects[0].value;
     }
-    subjectTitleEl.textContent = `Subjek: ${subjectSelect.value}`;
-    currentSubjectEl.textContent = subjectSelect.value;
+    // subjectTitleEl.textContent = `Subjek: ${subjectSelect.value}`;
+    // currentSubjectEl.textContent = subjectSelect.value;
   }
 }
 

@@ -11,39 +11,46 @@
   <div id="app-container" class="app-container">
     <main id="chat-app" class="chat-app">
       <header class="chat-app__header">
-        <h3 id="subject-title">Subjek: <span id="current-subject">Loading...</span></h3>
-        <label for="subject">Pilih Mata Pelajaran:</label>
-        <select id="subject" name="subject"></select>
+        <h1>Teman Belajar</h1>
+        <select id="subject" aria-label="Pilih mata pelajaran"></select>
       </header>
-      <div class="chat-app__content-container">
+      <div class="chat-app__content">
+        <div id="chat-welcome" class="chat-welcome">Halo, Ingin belajar apa hari ini?</div>
         <div id="chat-container" class="chat-container"></div>
-        <div class="chat-input">
-          <input type="text" id="message-input" placeholder="Ketik pesan Anda...">
-          <button id="send-btn">Kirim</button>
-        </div>
       </div>
-      <footer class="chat-app__footer"></footer>
+      <footer class="chat-app__footer">
+        <div class="chat-input">
+          <input type="text" id="chat-input__message" placeholder="Ketik pesan Anda...">
+          <button type="button" id="chat-input__send-button">Kirim</button>
+        </div>
+        <p class="chat-info">Model AI bisa membuat kesalahan, selalu periksa kembali</p>
+      </footer>
     </main>
     
-    <div id="sidesheet" class="sidesheet">
-      <header class="sidesheet__header">
-        <h2>Teman Belajar</h2>
-        <div class="current-user">
-          <img src="https://api.dicebear.com/7.x/icons/svg?seed=initial" alt="User avatar" class="current-user__avatar" title="Klik untuk login/logout" />
-          <span id="current-user__label">Loading...</span>
+    <nav id="sidenav" class="sidenav">
+      <header class="sidenav__header">
+        <div id="hamb">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
         </div>
       </header>
-      <section class="sidesheet__content">
-        <button id="new-chat-btn">+ Buat Percakapan Baru</button>
-        <h4></h4>
-        <ul id="conversation-list"></ul>
+      <section class="sidenav__content">
+        <button type="button" id="new-chat-btn">+ Buat Percakapan Baru</button>
+        <h4>Baru baru ini</h4>
+        <ul id="conversation-list" class="conversation-list"></ul>
       </section>
-      <footer></footer>
-    </div>
+      <footer class="sidenav__footer">
+        <div class="current-user">
+          <img src="https://api.dicebear.com/7.x/icons/svg?seed=initial" alt="User avatar" class="current-user__avatar" title="Klik untuk login/logout" />
+          <span class="current-user__label">Loading...</span>
+        </div>
+      </footer>
+    </nav>
   </div>
   
   <div id="modal-container" class="modal-container">
-    <div id="link-account-modal" class="modal">
+    <div id="link-account-modal" class="modal modal--hidden">
       <div class="modal__overlay"></div>
       <div class="modal__content-container">
         <div class="modal__content">
