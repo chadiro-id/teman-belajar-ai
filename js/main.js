@@ -188,7 +188,7 @@ function updateConversationListUI() {
       btnAction.addEventListener("click", (evt) => {
         evt.stopPropagation();
         actionContainer.classList.add("conversations-item__actions--visible");
-        const popup = popupMenu(actionContainer, ["rename", "delete"]);
+        const popup = popupMenu(actionContainer.getBoundingClientRect(), ["rename", "delete"]);
         popup.addEventListener("itemClick", (evt) => {
           if (evt.detail.menu == "rename") {
             renameConversation(convo.id);
