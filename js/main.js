@@ -125,7 +125,7 @@ function renderFullChatHistory() {
 // Appends a single new chat message to the DOM
 // This is called when a new message (user or AI) is added during an active chat.
 function appendChatMessageToDOM(role, content, targetList = null) {
-  const chatListElement = targetList || chatContainer.querySelector(".chat-list");
+  let chatListElement = targetList || chatContainer.querySelector(".chat-list");
   if (!chatListElement) {
       // If chat list doesn't exist (e.g., initial empty state), create it
       chatContainer.innerHTML = ""; // Clear any "start typing" message
