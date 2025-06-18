@@ -178,7 +178,21 @@ button {
   padding: 0.5rem 1rem;
 }
 
+.app-brand {
+  padding-inline: 1rem;
+}
+
+.app-brand__name {
+  font-size: 1.75rem;
+}
+
+.app-menu {
+  padding-inline: 1rem;
+}
+
 .chat-welcome {
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -329,8 +343,21 @@ button {
   align-items: stretch;
 }
 
+.btn-toggle-theme {
+  display: none;
+  padding: 0.5rem;
+  width: 36px;
+  height: 36px;
+}
+
+.sidenav--expanded-full .btn-toggle-theme {
+  display: block;
+}
+
 .btn-toggle-sidenav {
   padding: 0.5rem;
+  width: 36px;
+  height: 36px;
 }
 
 .btn-toggle-sidenav-expanded {

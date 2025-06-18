@@ -105,9 +105,11 @@ function renderFullChatHistory() {
 
   if (!activeConversation || !activeConversation.history || activeConversation.history.length === 0) {
     // Optionally display a "Start typing..." message
-    chatContainer.innerHTML = '<p class="empty-chat-message">Mulai ketik pesan Anda untuk memulai percakapan...</p>';
+    // chatContainer.innerHTML = '<p class="empty-chat-message">Mulai ketik pesan Anda untuk memulai percakapan...</p>';
+    chatWelcome.classList.toggle("chat-welcome--hidden", false);
     return;
   }
+  chatWelcome.classList.toggle("chat-welcome--hidden", true);
 
   const chatListElement = document.createElement("ul");
   chatListElement.className = "chat-list";
