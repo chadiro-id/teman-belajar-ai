@@ -285,7 +285,7 @@ async function selectConversation(conversationId) {
     });
     renderFullChatHistory(); // Render the full history of the selected chat
     updateConversationListUI(); // Update active class
-    console.log(`✅ Percakapan '${activeConversation.subject}' dimuat.`);
+    console.log(`✅ Percakapan '${activeConversation.title}' dimuat.`);
   } catch (e) {
     console.error("❌ Gagal memuat pesan percakapan:", e);
     renderFullChatHistory(); // Render empty if load fails
@@ -293,12 +293,12 @@ async function selectConversation(conversationId) {
 }
 
 async function renameConversation(convoId) {
-  const newSubject = prompt("Ganti nama subjek untuk percakapan ini:");
-  if (!newSubject) return;
+  const newTitle = prompt("Ganti nama judul untuk percakapan ini:");
+  if (!newTitle) return;
 
   try {
     await updateDoc(doc(db, "conversations", convoId), {
-      subject: newSubject.toLowerCase(),
+      title: newTitle.toLowerCase(),
       updated_at: serverTimestamp()
     });
     alert("✅ Berhasil di-rename!");
