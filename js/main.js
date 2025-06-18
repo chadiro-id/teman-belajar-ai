@@ -42,9 +42,9 @@ const btnToggleSidenavExpanded = document.getElementById("btn-toggle-sidenav-exp
 const elBrand = document.getElementById("brand");
 
 // Modal elements (assuming you have these in index.html)
-const linkAccountModal = document.getElementById("link-account-modal");
-const modalLinkAccountBtn = document.getElementById("modal-link-account");
-const modalStartNewBtn = document.getElementById("modal-start-new");
+// const linkAccountModal = document.getElementById("link-account-modal");
+// const modalLinkAccountBtn = document.getElementById("modal-link-account");
+// const modalStartNewBtn = document.getElementById("modal-start-new");
 
 // == Global State ==
 let currentUserId = null;
@@ -172,7 +172,7 @@ function updateConversationListUI() {
       }
 
       const label = document.createElement("span");
-      label.textContent = `${convo.subject} - ${new Date(convo.updated_at).toLocaleTimeString()}`;
+      label.textContent = `${convo.title}`;
       label.className = "conversations-item__label";
       label.addEventListener("click", () => selectConversation(convo.id));
 
@@ -235,7 +235,8 @@ async function startNewChat() {
   // Reset active conversation
   activeConversation = {
     id: `temp-${Date.now()}`, // Temporary ID for a new, unsaved conversation
-    user_id: currentUserId,
+    owner_id: currentUserId,
+    title: "Obrolan baru",
     subject: subjectSelect.value,
     history: [],
     created_at: Date.now(),
@@ -333,7 +334,8 @@ async function saveConversationToFirestore() {
     if (isNewConversation) {
       // Create new conversation document
       const newDocRef = await addDoc(collection(db, "conversations"), {
-        user_id: currentUserId,
+        owner_id: currentUserId,
+        title: activeConversation.title,
         subject: activeConversation.subject,
         created_at: serverTimestamp(),
         updated_at: serverTimestamp()
@@ -378,7 +380,8 @@ async function saveConversationToFirestore() {
     // Update allConversations map with the correct Firestore ID and latest metadata
     allConversations[activeConversation.id] = {
       id: activeConversation.id,
-      user_id: activeConversation.user_id,
+      owner_id: activeConversation.owner_id,
+      title: activeConversation.title,
       subject: activeConversation.subject,
       created_at: activeConversation.created_at, // Preserve original creation time
       updated_at: Date.now() // Use local timestamp for immediate UI sorting
@@ -460,7 +463,7 @@ async function loadConversationsForAuthenticatedUser() {
   try {
     const q = query(
       collection(db, "conversations"),
-      where("user_id", "==", currentUserId),
+      where("owner_id", "==", currentUserId),
       orderBy("updated_at", "desc")
     );
 
@@ -469,7 +472,8 @@ async function loadConversationsForAuthenticatedUser() {
       const data = docSnap.data();
       allConversations[docSnap.id] = {
         id: docSnap.id,
-        user_id: data.user_id,
+        owner_id: data.owner_id,
+        title: data.title,
         subject: data.subject,
         created_at: data.created_at ? data.created_at.toMillis() : 0,
         updated_at: data.updated_at ? data.updated_at.toMillis() : 0,
@@ -486,7 +490,7 @@ async function loadConversationsForAuthenticatedUser() {
     // } else {
     //   startNewChat(); // If no conversations, start a new one
     // }
-    startNewChat();
+    // startNewChat();
     updateConversationListUI();
 
   } catch (err) {
@@ -535,33 +539,34 @@ currentUserAvatarEl.addEventListener("click", async () => {
 
 // == Event Listeners ==
 subjectSelect.addEventListener("change", () => {
-  if (activeConversation) {
-    activeConversation.subject = subjectSelect.value;
-    // subjectTitleEl.textContent = `Subjek: ${activeConversation.subject}`;
-    // currentSubjectEl.textContent = activeConversation.subject;
+  // if (activeConversation) {
+  //   activeConversation.subject = subjectSelect.value;
+  //   // subjectTitleEl.textContent = `Subjek: ${activeConversation.subject}`;
+  //   // currentSubjectEl.textContent = activeConversation.subject;
     
-    // For existing conversations, update subject in Firestore
-    if (!activeConversation.id.startsWith("temp-")) {
-        updateDoc(doc(db, "conversations", activeConversation.id), {
-            subject: activeConversation.subject,
-            updated_at: serverTimestamp()
-        }).then(() => {
-            console.log("Subject updated in Firestore.");
-            if (allConversations[activeConversation.id]) {
-                allConversations[activeConversation.id].subject = activeConversation.subject;
-                allConversations[activeConversation.id].updated_at = Date.now();
-                updateConversationListUI();
-            }
-        }).catch(e => console.error("Error updating subject:", e));
-    } else {
-        // If it's a new (temp) conversation, just update locally
-        if (allConversations[activeConversation.id]) {
-             allConversations[activeConversation.id].subject = activeConversation.subject;
-             allConversations[activeConversation.id].updated_at = Date.now();
-             updateConversationListUI();
-        }
-    }
-  }
+  //   // For existing conversations, update subject in Firestore
+  //   if (!activeConversation.id.startsWith("temp-")) {
+  //       updateDoc(doc(db, "conversations", activeConversation.id), {
+  //           subject: activeConversation.subject,
+  //           updated_at: serverTimestamp()
+  //       }).then(() => {
+  //           console.log("Subject updated in Firestore.");
+  //           if (allConversations[activeConversation.id]) {
+  //               allConversations[activeConversation.id].subject = activeConversation.subject;
+  //               allConversations[activeConversation.id].updated_at = Date.now();
+  //               updateConversationListUI();
+  //           }
+  //       }).catch(e => console.error("Error updating subject:", e));
+  //   } else {
+  //       // If it's a new (temp) conversation, just update locally
+  //       if (allConversations[activeConversation.id]) {
+  //            allConversations[activeConversation.id].subject = activeConversation.subject;
+  //            allConversations[activeConversation.id].updated_at = Date.now();
+  //            updateConversationListUI();
+  //       }
+  //   }
+  // }
+  startNewChat();
 });
 
 newChatBtn.addEventListener("click", startNewChat);
