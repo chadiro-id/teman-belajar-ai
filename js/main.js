@@ -34,6 +34,9 @@ const conversationList = document.getElementById("conversation-list");
 // const subjectTitleEl = document.getElementById("subject-title");
 // const currentSubjectEl = document.getElementById("current-subject");
 
+const sidenav = document.getElementById("sidenav");
+const btnToggleSidenav = document.getElementById("btn-toggle-sidenav");
+
 // Modal elements (assuming you have these in index.html)
 const linkAccountModal = document.getElementById("link-account-modal");
 const modalLinkAccountBtn = document.getElementById("modal-link-account");
@@ -161,13 +164,16 @@ function updateConversationListUI() {
       const li = document.createElement("li");
       li.classList.add("conversation-item");
       if (activeConversation && activeConversation.id === convo.id) {
-        li.classList.add("active");
+        li.classList.add("conversation-item--active");
       }
 
       const label = document.createElement("span");
       label.textContent = `${convo.subject} - ${new Date(convo.updated_at).toLocaleTimeString()}`;
-      label.className = "clickable-label";
+      label.className = "conversation-item__label";
       label.addEventListener("click", () => selectConversation(convo.id));
+
+      const actions = document.createElement("div");
+      actions.className = "conversation-item__actions";
 
       const renameBtn = document.createElement("button");
       renameBtn.textContent = "✏️";
@@ -184,7 +190,9 @@ function updateConversationListUI() {
         deleteConversation(convo.id);
       });
 
-      li.append(label, renameBtn, deleteBtn);
+      actions.append(renameBtn, deleteBtn);
+
+      li.append(label, actions);
       conversationList.appendChild(li);
     });
 }
@@ -578,6 +586,9 @@ messageInput.addEventListener("keypress", function(event) {
     }
 });
 
+btnToggleSidenav.addEventListener("click", () => {
+
+});
 
 // == Initial Load & Data Fetching ==
 

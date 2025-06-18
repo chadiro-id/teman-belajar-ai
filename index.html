@@ -9,13 +9,56 @@
 </head>
 <body>
   <div id="app-container" class="app-container">
+    <div id="sidenav-control" class="sidenav-control">
+      <button type="button" id="btn-toggle-sidenav" aria-label="Toggle sidenav">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+      </button>
+    </div>
+    <nav id="sidenav" class="sidenav">
+      <header class="sidenav__header">
+        <div class="sidenav__header-inner">
+          <div id="brand">
+            <h1 class="brand__name">Teman Belajar</h1>
+          </div>
+          <button type="button" id="btn-toggle-sidenav-fullwidth" aria-label="Toggle sidenav full width">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+          </button>
+        </div>
+      </header>
+      <div class="sidenav__content">
+        <div class="sidenav__content-inner">
+          <button type="button" id="new-chat-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
+            </svg>
+            <span>+ Buat Percakapan Baru</span>
+          </button>
+          <section id="conversations" class="conversation-container">
+            <span>Baru baru ini</span>
+            <ul id="conversation-list" class="conversation-list"></ul>
+          </section>
+        </div>
+      </div>
+      <footer class="sidenav__footer">
+        <div class="sidenav__footer-inner">
+          <div class="current-user">
+            <img src="https://api.dicebear.com/7.x/icons/svg?seed=initial" alt="User avatar" class="current-user__avatar" title="Klik untuk login/logout" />
+            <span class="current-user__label">Loading...</span>
+          </div>
+        </div>
+      </footer>
+    </nav>
+
     <main id="chat-app" class="chat-app">
       <header class="chat-app__header">
-        <h1>Teman Belajar</h1>
+        <h2>Chat Title</h2>
         <select id="subject" aria-label="Pilih mata pelajaran"></select>
       </header>
       <div class="chat-app__content">
-        <div id="chat-welcome" class="chat-welcome">Halo, Ingin belajar apa hari ini?</div>
         <div id="chat-container" class="chat-container"></div>
       </div>
       <footer class="chat-app__footer">
@@ -26,27 +69,6 @@
         <p class="chat-info">Model AI bisa membuat kesalahan, selalu periksa kembali</p>
       </footer>
     </main>
-    
-    <nav id="sidenav" class="sidenav">
-      <header class="sidenav__header">
-        <div id="hamb">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-          </svg>
-        </div>
-      </header>
-      <section class="sidenav__content">
-        <button type="button" id="new-chat-btn">+ Buat Percakapan Baru</button>
-        <h4>Baru baru ini</h4>
-        <ul id="conversation-list" class="conversation-list"></ul>
-      </section>
-      <footer class="sidenav__footer">
-        <div class="current-user">
-          <img src="https://api.dicebear.com/7.x/icons/svg?seed=initial" alt="User avatar" class="current-user__avatar" title="Klik untuk login/logout" />
-          <span class="current-user__label">Loading...</span>
-        </div>
-      </footer>
-    </nav>
   </div>
   
   <div id="modal-container" class="modal-container">

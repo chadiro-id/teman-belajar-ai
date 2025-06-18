@@ -11,9 +11,13 @@ body {
   margin: 0;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  padding: 0;
+  margin: 0;
+}
+
 .app-container {
   display: flex;
-  flex-direction: row-reverse;
   height: 100vh;
   overflow: hidden;
 }
@@ -60,10 +64,7 @@ body {
 }
 
 .chat-container {
-  flex: 1;
   margin-bottom: 1rem;
-  border-radius: 8px;
-  overflow-y: auto;
 }
 
 .chat-list {
@@ -122,8 +123,16 @@ body {
   text-align: center;
 }
 
+.sidenav-control {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+}
+
 .sidenav {
-  position: sticky;
+  position: relative;
   height: 100%;
   width: 100px;
   display: flex;
@@ -131,7 +140,7 @@ body {
   overflow-y: auto;
 }
 
-.sidenav--expanded {
+.sidenav--fullwidth {
   width: 280px;
 }
 
@@ -139,23 +148,44 @@ body {
   width: 100%;
   position: sticky;
   top: 0;
-  padding: 0.5rem 1rem;
+  left: 0;
+}
+
+.sidenav__header-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+.sidenav--fullwidth .sidenav__header-inner {
+  flex-direction: row;
 }
 
 .sidenav__content {
+  width: 100%;
   flex-grow: 1;
-  padding: 0.5rem 1rem;
+}
+
+.sidenav__content-inner {
+  padding: 1rem;
 }
 
 .sidenav__footer {
   width: 100%;
   position: sticky;
   bottom: 0;
-  padding: 0.5rem 1rem;
+  left: 0;
+}
+
+.sidenav__footer-inner {
+  padding: 1rem;
 }
 
 .current-user {
   display: flex;
+  align-items: center;
 }
 
 .current-user__avatar {
@@ -164,10 +194,62 @@ body {
   border-radius: 50%;
 }
 
+.current-user__label {
+  display: none;
+}
+
+.sidenav--fullwidth .current-user__label {
+  display: block;
+}
+
+.conversation-container {
+  width: 100%;
+  display: none;
+}
+
+.sidenav--fullwidth .conversation-container {
+  display: block;
+}
+
 .conversation-list {
-  overflow-y: auto;
+  width: 100%;
   list-style-type: none;
   padding: 0;
+}
+
+.conversation-item {
+  width: 100%;
+  display: flex;
+}
+
+.conversation-item:hover > .conversation-item__actions {
+  visibility: visible;
+}
+
+.conversation-item__label {
+  flex: 1;
+  white-space: nowrap;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  padding: 0.5rem;
+}
+
+.conversation-item__actions {
+  position: relative;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  visibility: hidden;
+  background-color: wheat;
+}
+
+.conversation-item__actions:hover {
+  visibility: visible;
+}
+
+.conversation-item__action-button {
+  width: 36px;
+  height: 36px;
 }
 
 .modal {
