@@ -355,7 +355,7 @@ button {
 }
 
 .sidenav--expanded-full .btn-toggle-theme {
-  display: block;
+  display: flex;
 }
 
 .btn-toggle-sidenav {
@@ -506,6 +506,12 @@ button {
 
 .tb-popup-menu__list-item:hover {
   background-color: var(--color-surface-shade-a10);
+}
+
+.ic-toggle-theme {
+  inline-size: 100%;
+  block-size: 100%;
+  stroke-linecap: round;
 }
 
 .ic-toggle-theme > :is(.moon, .sun, .sun-beams) {
