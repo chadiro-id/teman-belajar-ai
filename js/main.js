@@ -80,25 +80,6 @@ let availableSubjects = [
 
 // == Helper Functions ==
 
-// Function to render Markdown (using a simple regex for basic Markdown)
-// For robust rendering, consider a library like 'marked.js' or 'DOMPurify' for safety
-function renderMarkdown(markdownText) {
-  // Simple markdown to HTML conversion
-  let html = markdownText
-    .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>') // Code blocks
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')     // Bold
-    .replace(/\*(.*?)\*/g, '<em>$1</em>')               // Italic
-    .replace(/^- (.*)/gm, '<li>$1</li>')                 // Unordered list
-    .replace(/^(\d+)\. (.*)/gm, '<li>$2</li>');         // Ordered list (will need <ol> wrap)
-  
-  // Wrap list items if they exist
-  if (html.includes('<li>')) {
-      html = html.replace(/(<li>.*?<\/li>)+/gs, '<ul>$&</ul>');
-  }
-
-  return html;
-}
-
 // Renders the ENTIRE chat history from activeConversation
 // This is called when a new conversation is started or an existing one is selected.
 function renderFullChatHistory() {
@@ -213,26 +194,6 @@ function updateConversationListUI() {
           console.log("popup detached");
         });
       });
-
-      // const actions = document.createElement("div");
-      // actions.className = "conversations-item__actions";
-
-      // const renameBtn = document.createElement("button");
-      // renameBtn.textContent = "✏️";
-      // renameBtn.title = "Rename";
-      // renameBtn.addEventListener("click", (e) => {
-      //   e.stopPropagation();
-      //   renameConversation(convo.id);
-      // });
-      // const deleteBtn = document.createElement("button");
-      // deleteBtn.textContent = "🗑️";
-      // deleteBtn.title = "Delete";
-      // deleteBtn.addEventListener("click", (e) => {
-      //   e.stopPropagation();
-      //   deleteConversation(convo.id);
-      // });
-
-      // actions.append(renameBtn, deleteBtn);
       actionContainer.appendChild(btnAction);
       li.append(label, actionContainer);
       conversationsList.appendChild(li);
