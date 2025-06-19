@@ -106,10 +106,10 @@ function renderFullChatHistory() {
   if (!activeConversation || !activeConversation.history || activeConversation.history.length === 0) {
     // Optionally display a "Start typing..." message
     // chatContainer.innerHTML = '<p class="empty-chat-message">Mulai ketik pesan Anda untuk memulai percakapan...</p>';
-    chatWelcome.classList.toggle("chat-welcome--hidden", false);
+    chatWelcome.classList.remove("chat-welcome--hidden");
     return;
   }
-  chatWelcome.classList.toggle("chat-welcome--hidden", true);
+  chatWelcome.classList.add("chat-welcome--hidden");
 
   const chatListElement = document.createElement("ul");
   chatListElement.className = "chat-list";
@@ -399,21 +399,22 @@ async function saveConversationToFirestore() {
 
 // Handles UI updates for user status
 function updateAuthUI(user) {
+  const iconProfile = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+  </svg>`;
   if (user) {
     currentUserId = user.uid;
     if (user.isAnonymous) {
-      currentUserAvatarEl.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-      </svg>`;
+      currentUserAvatarEl.innerHTML = iconProfile
       currentUserLabelEl.textContent = "Tamu";
     } else {
       const photo = user.photoURL || `https://api.dicebear.com/7.x/icons/svg?seed=${user.uid}`;
-      currentUserAvatarEl.innerHTML = `<img src="${photo}" alt="User" class="avatar" title="Klik untuk logout" />`;
+      currentUserAvatarEl.innerHTML = `<img src="${photo}" alt="User's photo."/>`;
       currentUserLabelEl.textContent = user.displayName || user.email || "Pengguna";
     }
   } else {
     // Should not happen if signInAnonymously is called on app load
-    currentUserAvatarEl.innerHTML = `<img src="https://api.dicebear.com/7.x/icons/svg?seed=fallback" alt="Guest" class="avatar" />`;
+    currentUserAvatarEl.innerHTML = iconProfile;
     currentUserLabelEl.textContent = "Offline";
   }
 }
