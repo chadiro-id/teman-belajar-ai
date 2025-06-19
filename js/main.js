@@ -154,6 +154,7 @@ function addMessageToActiveChat(role, content) {
     console.error("No active conversation to add message to.");
     return;
   }
+  chatWelcome.classList.remove("chat-welcome--hidden");
   activeConversation.history.push({ role, content, timestamp: Date.now() });
   appendChatMessageToDOM(role, content); // Only append the new message to DOM
 }
