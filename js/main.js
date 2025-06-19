@@ -161,7 +161,7 @@ function addMessageToActiveChat(role, content) {
       activeConversation.title = content;
     }
   }
-  chatWelcome.classList.remove("chat-welcome--hidden");
+  chatWelcome.classList.add("chat-welcome--hidden");
   activeConversation.history.push({ role, content, timestamp: Date.now() });
   appendChatMessageToDOM(role, content); // Only append the new message to DOM
 }
