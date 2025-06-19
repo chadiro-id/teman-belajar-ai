@@ -244,19 +244,37 @@ button {
   max-width: 768px;
   margin-inline: auto;
   display: flex;
+  align-items: center;
   border: 1px solid var(--color-outline);
+  border-radius: var(--dimen-radius-low);
+  background-color: var(--color-surface-container-low);
+  overflow: hidden;
 }
 
 .chat-input__message {
   flex: 1;
   padding: 0.75rem;
-  border-radius: 6px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+.chat-input__message:focus,
+.chat-input__message:focus-visible,
+.chat-input__message:focus-within {
+  outline: none;
 }
 
 .chat-input__send-button {
+  width: 36px;
+  height: 36px;
   padding: 0.5rem;
   border: none;
   cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .chat-input__send-button > svg {
