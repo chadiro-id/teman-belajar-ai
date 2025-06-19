@@ -139,7 +139,7 @@ function addMessageToActiveChat(role, content) {
   }
   if (!activeConversation.title) {
     if (content.length > 50) {
-      activeConversation.title = content.slice(0, 50) + "...";
+      activeConversation.title = content.slice(0, 47) + "...";
     } else {
       activeConversation.title = content;
     }
@@ -205,6 +205,10 @@ function updateConversationListUI() {
 // Starts a new chat session (locally)
 async function startNewChat() {
   // Reset active conversation
+  if (activeConversation && activeConversation.id.startsWith("temp-")) {
+    delete allConversations[activeConversation.id];
+  }
+
   activeConversation = {
     id: `temp-${Date.now()}`, // Temporary ID for a new, unsaved conversation
     owner_id: currentUserId,
