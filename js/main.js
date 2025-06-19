@@ -181,7 +181,7 @@ function updateConversationListUI() {
       }
 
       const label = document.createElement("span");
-      label.textContent = `${convo.title}`;
+      label.textContent = convo.title || "Obrolan baru";
       label.className = "conversations-item__label";
       label.addEventListener("click", () => selectConversation(convo.id));
 
@@ -197,12 +197,12 @@ function updateConversationListUI() {
       btnAction.addEventListener("click", (evt) => {
         evt.stopPropagation();
         actionContainer.classList.add("conversations-item__actions--visible");
-        const popup = popupMenu(actionContainer.getBoundingClientRect(), ["rename", "delete"]);
+        const popup = popupMenu(actionContainer.getBoundingClientRect(), ["Ubah Nama", "Hapus"]);
         popup.addEventListener("itemClick", (evt) => {
-          if (evt.detail.menu == "rename") {
+          if (evt.detail.menu == "Ubah Nama") {
             renameConversation(convo.id);
           }
-          else if (evt.detail.menu == "delete") {
+          else if (evt.detail.menu == "Hapus") {
             deleteConversation(convo.id);
           }
         });
@@ -245,7 +245,7 @@ async function startNewChat() {
   activeConversation = {
     id: `temp-${Date.now()}`, // Temporary ID for a new, unsaved conversation
     owner_id: currentUserId,
-    title: "Obrolan baru",
+    title: "",
     subject: subjectSelect.value,
     history: [],
     created_at: Date.now(),
