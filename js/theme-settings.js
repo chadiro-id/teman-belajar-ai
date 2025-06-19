@@ -1,5 +1,5 @@
 // Theme Settings
-const storageKey = 'theme-preference';
+const storageKey = 'tb-theme';
 const btnToggleTheme = document.getElementById("btn-toggle-theme");
 
 const onThemeToggleButtonClicked = () => {
