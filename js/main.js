@@ -22,6 +22,7 @@ const signInWithPopup = window.firebaseSignInWithPopup;
 const signOut = window.firebaseSignOut;
 const linkWithPopup = window.firebaseLinkWithPopup;
 
+const marked = window.marked;
 
 // == DOM Elements ==
 const currentUserAvatarEl = document.querySelector(".current-user__avatar");
@@ -139,7 +140,8 @@ function appendChatMessageToDOM(role, content, targetList = null) {
   const li = document.createElement("li");
   li.className = `chat-bubble chat-bubble--${role}`;
   if (role === "assistant") {
-    li.innerHTML = renderMarkdown(content);
+    // li.innerHTML = renderMarkdown(content);
+    li.innerHTML = marked.parse(content);
   } else {
     li.textContent = content;
   }
