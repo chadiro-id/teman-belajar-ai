@@ -349,6 +349,9 @@ button {
   padding: 0.5rem;
   width: 36px;
   height: 36px;
+
+  justify-content: center;
+  align-items: center;
 }
 
 .sidenav--expanded-full .btn-toggle-theme {
@@ -503,4 +506,50 @@ button {
 
 .tb-popup-menu__list-item:hover {
   background-color: var(--color-surface-shade-a10);
+}
+
+.ic-toggle-theme > :is(.moon, .sun, .sun-beams) {
+  transform-origin: center;
+}
+
+.ic-toggle-theme > .sun {
+  transition: transform .5s var(--cr-ease-elastic-out-3);
+}
+
+.ic-toggle-theme > .sun-beams {
+  stroke-width: 2px;
+  transition: transform .5s var(--cr-ease-elastic-out-4), opacity .5s var(--cr-ease-3);
+}
+
+.ic-toggle-theme .moon > circle {
+  transition: transform .25s var(--cr-ease-out-5);
+}
+
+[data-theme="dark"] .ic-toggle-theme > .sun {
+  transform: scale(1.75);
+  transition-timing-function: var(--cr-ease-3);
+  transition-duration: .25s;
+}
+
+[data-theme="dark"] .ic-toggle-theme > .sun-beams {
+  opacity: 0;
+  transition-duration: .15s;
+  transform: rotateZ(-25deg);
+}
+
+[data-theme="dark"] .ic-toggle-theme > .moon > circle {
+  transform: translateX(-7px);
+  transition-duration: .5s;
+  transition-delay: .25s;
+}
+
+@supports (cx: 1) {
+  .ic-toggle-theme .moon > circle {
+    transition: cx .25s var(--cr-ease-out-5);
+  }
+
+  [data-theme="dark"] .ic-toggle-theme > .moon > circle {
+    cx: 17;
+    transform: translateX(0);
+  }
 }
