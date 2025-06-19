@@ -48,6 +48,11 @@
   --dimen-radius-high: 16px;
   --dimen-radius-highest: 20px;
   --dimen-radius-max: calc(1px * infinity);
+  
+  --cr-ease-3: cubic-bezier(0.25, 0, 0.3, 1);
+  --cr-ease-out-5: cubic-bezier(0, 0, 0, 1);
+  --cr-ease-elastic-out-3: cubic-bezier(0.5, 1.25, 0.75, 1.25);
+  --cr-ease-elastic-out-4: cubic-bezier(0.5, 1.5, 0.75, 1.25);
 }
 
 *, *::before *::after {
